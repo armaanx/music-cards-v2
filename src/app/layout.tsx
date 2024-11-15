@@ -1,14 +1,15 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import Providers from "@/components/Providers";
 import clsx from "clsx";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
 import { getServerSession } from "next-auth";
-import Provider from "@/components/Provider";
+import { Sora } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Sora({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "Music Cards",
@@ -26,21 +27,14 @@ export default async function RootLayout({
       <body
         className={clsx(
           inter.className,
-          "antialiased flex flex-col min-h-screen overflow-x-hidden"
+          "antialiased flex flex-col min-h-screen overflow-x-hidden grainy-light dark:bg-none"
         )}
       >
-        <Provider session={session}>
-          <ThemeProvider
-            attribute={"class"}
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <Navbar />
-            <main className="flex-grow pt-20">{children}</main>
-            <Footer />
-          </ThemeProvider>
-        </Provider>
+        <Providers session={session!}>
+          <Navbar />
+          <main className="flex-grow pt-20">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
