@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       session.user.accessToken = token.accessToken as string;
-      session.user.refreshToken = token.refreshToken as string;
+      //session.user.refreshToken = token.refreshToken as string;
       session.user.username = token.username as string;
       return session;
     },
@@ -85,6 +85,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/",
   },
+  secret: process.env.NEXTAUTH_SECRET,
   events: {
     async signIn({ user }) {
       console.log("User signed in:", user.email);
