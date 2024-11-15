@@ -1,4 +1,4 @@
-import { getTopTracks } from "@/actions/getTopTracks";
+import { getTopArtists } from "@/actions/getTopArtists";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -9,9 +9,8 @@ export async function GET(request: NextRequest) {
         | "short_term"
         | "medium_term"
         | "long_term") || "medium_term";
-    const limit = parseInt(searchParams.get("limit")!, 10);
 
-    const tracks = await getTopTracks(timeRange, limit);
+    const tracks = await getTopArtists(timeRange, 10);
     return NextResponse.json(tracks);
   } catch (error) {
     console.error("Error in top tracks API route:", error);
