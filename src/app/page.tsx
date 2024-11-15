@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { BsSpotify } from "react-icons/bs";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -24,14 +25,13 @@ export default function Home() {
 
               <div className="flex flex-row gap-4 justify-center lg:justify-start">
                 {!session?.user ? (
-                  <Button
-                    className="rounded-full font-semibold text-lg sm:text-xl"
-                    variant="default"
-                    size="lg"
+                  <button
                     onClick={() => signIn("spotify", { callbackUrl: "/main" })}
+                    className="flex flex-row items-center justify-center gap-2 border bg-[#1ed760]  text-black p-3 px-4 rounded-full font-semibold hover:text-white hover:bg-stone-900 trasnsition duration-200"
                   >
                     Login with Spotify
-                  </Button>
+                    <BsSpotify className="text-2xl" />
+                  </button>
                 ) : (
                   <Button
                     className="rounded-full font-semibold text-lg sm:text-xl"
