@@ -10,7 +10,7 @@ export default async function Main() {
   }
   return (
     <div className="w-full">
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="w-full max-w-5xl mx-auto">
         <TopStats username={session.user.name!} userImg={session.user.image!} />
       </div>
     </div>
