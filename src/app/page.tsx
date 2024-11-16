@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download, Music, Paintbrush } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { BsSpotify } from "react-icons/bs";
@@ -27,7 +27,7 @@ export default function Home() {
                 {!session?.user ? (
                   <button
                     onClick={() => signIn("spotify", { callbackUrl: "/main" })}
-                    className="flex flex-row items-center justify-center gap-2 border bg-[#1ed760]  text-black p-3 px-4 rounded-full font-semibold hover:text-white hover:bg-stone-900 trasnsition duration-200"
+                    className="flex flex-row items-center justify-center gap-2 border bg-[#1ed760] text-black p-3 px-4 rounded-full font-semibold hover:text-white hover:bg-stone-900 trasnsition duration-200"
                   >
                     Login with Spotify
                     <BsSpotify className="text-2xl" />
@@ -86,6 +86,53 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full  py-16 px-4 sm:px-6 lg:px-8">
+        <div className="container mx-auto max-w-5xl">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Features</h2>
+            <p className="text-lg text-muted-foreground">
+              Everything you need to showcase your music taste
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="border p-6 rounded-lg shadow-lg hover:scale-105 transition-all bg-white dark:bg-background">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg mb-4 flex items-center justify-center">
+                <Paintbrush className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">
+                Multiple Card Styles
+              </h3>
+              <p className="text-muted-foreground">
+                Choose from various beautifully designed card layouts to
+                showcase your music taste in style.
+              </p>
+            </div>
+
+            <div className="border p-6 rounded-lg shadow-lg hover:scale-105 transition-all bg-white dark:bg-background">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg mb-4 flex items-center justify-center">
+                <Music className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Top Stats</h3>
+              <p className="text-muted-foreground">
+                See your most played songs/artists and discover your music
+                patterns over time.
+              </p>
+            </div>
+
+            <div className="border p-6 rounded-lg shadow-lg hover:scale-105 transition-all bg-white dark:bg-background">
+              <div className="w-12 h-12 bg-green-100 rounded-lg mb-4 flex items-center justify-center">
+                <Download className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Download</h3>
+              <p className="text-muted-foreground">
+                Download your card in a click and share it across social media.
+              </p>
             </div>
           </div>
         </div>
