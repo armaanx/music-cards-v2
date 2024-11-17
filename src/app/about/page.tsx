@@ -18,9 +18,10 @@ const Page = () => {
         Built with <span className="font-bold">Next.js</span>
       </p>
       <p>❤️</p>
-      <p className="text-xs mt-16">
-        if the download button doesn&apos;t work, try again or try a different
-        browser or use it on a pc. sorry for the inconvenience. 😔
+      <p className="text-sm max-w-xs mt-16 text-center">
+        Having trouble with the download? Don’t sweat it! 🚀 Try downloading
+        multiple times, switching browsers, or giving it a go on a desktop. And
+        hey, screenshots are always a classic move! 🖼️✨
       </p>
     </div>
   );
