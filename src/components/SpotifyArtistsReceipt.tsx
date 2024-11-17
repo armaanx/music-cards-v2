@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
 import { Courier_Prime } from "next/font/google";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 
@@ -15,13 +15,18 @@ interface SpotifyArtistsReceiptProps {
   username: string;
 }
 
-const font = Courier_Prime({ subsets: ["latin"], weight: ["400", "700"] });
+const font = Courier_Prime({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  preload: true,
+});
 
 export default function SpotifyArtistsReceipt({
   artists,
   timeRange,
   username,
 }: SpotifyArtistsReceiptProps) {
+  const [loading, setLoading] = useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const onButtonClick = () => {
@@ -31,13 +36,16 @@ export default function SpotifyArtistsReceipt({
 
     toPng(receiptRef.current, { quality: 1, cacheBust: false, pixelRatio: 2 })
       .then((dataUrl) => {
+        setLoading(true);
         const link = document.createElement("a");
-        link.download = "my-image-name.png";
+        link.download = "music_card_" + new Date().getTime() + ".png";
         link.href = dataUrl;
         link.click();
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -86,6 +94,7 @@ export default function SpotifyArtistsReceipt({
                   <span className="truncate">{artist.name}</span>
                   <div className="relative h-10 w-10">
                     <Image
+                      crossOrigin="anonymous"
                       src={artist.images[0].url}
                       alt={artist.name}
                       fill
@@ -105,6 +114,7 @@ export default function SpotifyArtistsReceipt({
               Card #{Math.random().toString(36).slice(2, 7).toUpperCase()}
             </div>
             <Image
+              crossOrigin="anonymous"
               priority
               quality={100}
               unoptimized
@@ -120,6 +130,7 @@ export default function SpotifyArtistsReceipt({
 
       <Button
         onClick={onButtonClick}
+        disabled={loading}
         size="lg"
         className="bg-green-600 text-white transition hover:bg-green-700"
       >

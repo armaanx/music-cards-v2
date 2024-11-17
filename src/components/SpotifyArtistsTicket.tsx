@@ -4,7 +4,7 @@ import { SpotifyArtists } from "@/types";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
 import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
@@ -21,6 +21,7 @@ export default function SpotifyArtistsTicket({
   username,
   userImg,
 }: SpotifyArtistsTicketProps) {
+  const [loading, setLoading] = useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
   const onButtonClick = () => {
     if (receiptRef.current === null) {
@@ -29,13 +30,16 @@ export default function SpotifyArtistsTicket({
 
     toPng(receiptRef.current, { quality: 1, cacheBust: false, pixelRatio: 2 })
       .then((dataUrl) => {
+        setLoading(true);
         const link = document.createElement("a");
-        link.download = "my-image-name.png";
+        link.download = "music_card_" + new Date().getTime() + ".png";
         link.href = dataUrl;
         link.click();
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
   const formatTimeRange = (range: string) => {
@@ -58,6 +62,7 @@ export default function SpotifyArtistsTicket({
           <CardTitle>
             <div className="flex flex-row items-center justify-start gap-2">
               <Image
+                crossOrigin="anonymous"
                 src={userImg}
                 alt={username + "profile image"}
                 height={45}
@@ -89,6 +94,7 @@ export default function SpotifyArtistsTicket({
                     <span className="flex-1 truncate">{artist.name}</span>
                     <div className="relative w-10 h-10">
                       <Image
+                        crossOrigin="anonymous"
                         src={artist.images[0].url}
                         alt={artist.name}
                         fill
@@ -120,6 +126,7 @@ export default function SpotifyArtistsTicket({
       </Card>
       <Button
         onClick={onButtonClick}
+        disabled={loading}
         size={"lg"}
         className="mb-4  bg-green-600 text-white  hover:bg-green-700 transition "
       >

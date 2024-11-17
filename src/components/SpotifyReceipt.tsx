@@ -2,7 +2,7 @@
 import { SpotifyTrack } from "@/types";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { Courier_Prime } from "next/font/google";
 import clsx from "clsx";
@@ -21,6 +21,7 @@ export default function SpotifyReceipt({
   timeRange,
   username,
 }: SpotifyReceiptProps) {
+  const [loading, setLoading] = useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
   const onButtonClick = () => {
     if (receiptRef.current === null) {
@@ -29,13 +30,16 @@ export default function SpotifyReceipt({
 
     toPng(receiptRef.current, { quality: 1, cacheBust: false, pixelRatio: 2 })
       .then((dataUrl) => {
+        setLoading(true);
         const link = document.createElement("a");
-        link.download = "my-image-name.png";
+        link.download = "music_card_" + new Date().getTime() + ".png";
         link.href = dataUrl;
         link.click();
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
   const formatTimeRange = (range: string) => {
@@ -50,28 +54,6 @@ export default function SpotifyReceipt({
         return range;
     }
   };
-
-  // const handleDownload = async () => {
-  //   if (!receiptRef.current) return;
-
-  //   try {
-  //     const canvas = await html2canvas(receiptRef.current, {
-  //       scale: 2,
-  //       logging: false,
-  //       useCORS: true,
-  //       allowTaint: true,
-  //       backgroundColor: "#ffffff",
-  //     });
-
-  //     const image = canvas.toDataURL("image/jpeg");
-  //     const link = document.createElement("a");
-  //     link.href = image;
-  //     link.download = `spotify-receipt-${timeRange}-${new Date().getTime()}.jpeg`;
-  //     link.click();
-  //   } catch (error) {
-  //     console.error("Error generating receipt:", error);
-  //   }
-  // };
 
   const totalDuration = tracks.reduce(
     (acc, track) => acc + track.duration_ms,
@@ -135,6 +117,7 @@ export default function SpotifyReceipt({
           <div className="mt-2 pt-2 border-t border-dashed border-black flex flex-col items-center justify-center w-full gap-1">
             Card #{Math.random().toString(36).slice(2, 7).toUpperCase()}
             <Image
+              crossOrigin="anonymous"
               priority
               unoptimized
               quality={100}
@@ -148,6 +131,7 @@ export default function SpotifyReceipt({
         </div>
       </div>
       <Button
+        disabled={loading}
         onClick={onButtonClick}
         size={"lg"}
         className="mb-4  bg-green-600 text-white  hover:bg-green-700 transition "

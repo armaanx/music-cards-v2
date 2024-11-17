@@ -3,11 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SpotifyTrack } from "@/types";
 import { toPng } from "html-to-image";
 import { Download } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
-//import html2canvas from "html2canvas";
 
 interface SpotifyTicketProps {
   tracks: SpotifyTrack[];
@@ -22,6 +21,7 @@ const SpotifyTicket = ({
   username,
   userImg,
 }: SpotifyTicketProps) => {
+  const [loading, setLoading] = useState(false);
   const receiptRef = useRef<HTMLDivElement>(null);
 
   const onButtonClick = () => {
@@ -31,13 +31,16 @@ const SpotifyTicket = ({
 
     toPng(receiptRef.current, { quality: 1, cacheBust: false, pixelRatio: 2 })
       .then((dataUrl) => {
+        setLoading(true);
         const link = document.createElement("a");
-        link.download = "my-image-name.png";
+        link.download = "music_card_" + new Date().getTime() + ".png";
         link.href = dataUrl;
         link.click();
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 
@@ -67,6 +70,7 @@ const SpotifyTicket = ({
           <CardTitle>
             <div className="flex flex-row items-center justify-start gap-2">
               <Image
+                crossOrigin="anonymous"
                 src={userImg}
                 alt={username + "profile image"}
                 height={40}
@@ -108,6 +112,7 @@ const SpotifyTicket = ({
             <div className="mt-2 pt-2 border-t border-stone-600 flex flex-row items-center justify-between">
               <div>{formatDate(new Date())}</div>
               <Image
+                crossOrigin="anonymous"
                 priority
                 quality={100}
                 unoptimized
@@ -122,6 +127,7 @@ const SpotifyTicket = ({
         </CardContent>
       </Card>
       <Button
+        disabled={loading}
         onClick={onButtonClick}
         size={"lg"}
         className="mb-4  bg-green-600 text-white  hover:bg-green-700 transition "
