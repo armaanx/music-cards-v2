@@ -13,7 +13,7 @@ const inter = Sora({
 
 export const metadata: Metadata = {
   title: "Music Cards",
-  description: "Get your Spotify stats in an aeshtetic format!",
+  description: "Get your Spotify stats in aesthetic formats!",
 };
 
 export default async function RootLayout({
